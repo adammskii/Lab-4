@@ -1,0 +1,52 @@
+package testqueue;
+
+import static org.junit.jupiter.api.Assertions.*;
+
+import java.util.Queue;
+
+import queue_singlelinkedlist.FifoQueue;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+
+class TestAppendFifoQueue {
+	private FifoQueue<Integer> myQueue1;
+	private FifoQueue<Integer> myQueue2;
+	
+	@BeforeEach
+	void setUp() {
+		myQueue1 = new FifoQueue<Integer>();
+		myQueue2 = new FifoQueue<Integer>();
+	}
+
+	@AfterEach
+	void tearDown(){
+		myQueue1 = null;
+		myQueue2 = null;
+	}
+
+	@Test
+	void testSelf() {
+		myQueue1.offer(1);
+		myQueue1.append(myQueue1);
+	//	assertEquals(1, myQueue1, "peek on queue of size 1");
+	}
+	
+	@Test
+	void test2Empty() {
+		myQueue1.append(myQueue2);
+		assertEquals(0, myQueue1.size(), "Fel");
+		assertEquals(0, myQueue2.size(), "Fel");
+	}
+	
+	@Test
+	void test1Empty() {
+		myQueue1.offer(1);
+		myQueue1.append(myQueue2);
+		//Testar om den som tagits från är tom
+		assertEquals(0, myQueue2.size(), "Fel");
+		
+		
+		
+	}
+}
