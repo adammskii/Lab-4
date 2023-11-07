@@ -24,13 +24,6 @@ class TestAppendFifoQueue {
 		myQueue1 = null;
 		myQueue2 = null;
 	}
-
-	@Test
-	void testSelf() {
-		myQueue1.offer(1);
-		myQueue1.append(myQueue1);
-	//	assertEquals(1, myQueue1, "peek on queue of size 1");
-	}
 	
 	@Test
 	void test2Empty() {
@@ -40,13 +33,46 @@ class TestAppendFifoQueue {
 	}
 	
 	@Test
-	void test1Empty() {
+	void testAppendEmpty() {
 		myQueue1.offer(1);
 		myQueue1.append(myQueue2);
-		//Testar om den som tagits från är tom
+		assertEquals(myQueue1.poll(), 1, "fel");
 		assertEquals(0, myQueue2.size(), "Fel");
+	}
+	@Test
+	void testAppendToEmpty() {
+		//Ger 2 en 2:a
+		myQueue2.offer(2);
+		myQueue1.append(myQueue2);
+		//Om 1 innhåller det som två hade och två är tom stämmer det
+		assertEquals(myQueue1.poll(),2, "fel");
+		assertEquals(myQueue2.size(),0, "fel");
 		
+	}
+	@Test
+	void testTwoNoneEmpty() {
+		myQueue1.offer(1);
+		myQueue1.offer(2);
+		myQueue2.offer(3);
+		myQueue2.offer(4);
 		
-		
+		myQueue1.append(myQueue2);
+		//Testar att de är i ordning
+		assertEquals(myQueue1.poll(),1,"fel");
+		assertEquals(myQueue1.poll(),2, "fel");
+		assertEquals(myQueue1.poll(),3, "fel");
+		assertEquals(myQueue1.poll(),4, "fel");
+		//Testar att 2 är tom
+		assertTrue(myQueue2.isEmpty(), "Fel");
+	}
+	//"Cannot append a queue to itself"
+	@Test
+	void testSelf() {
+		myQueue1.offer(1);
+		myQueue1.append(myQueue1);
+		Throwable exception = org.junit.jupiter.api.Assertions.assertThrows(IllegalArgumentException.class, () -> {
+            myQueue1.append(myQueue1);
+        });
+		assertEquals("Cannot append a queue to itself", exception.getMessage(), "Fel");
 	}
 }
