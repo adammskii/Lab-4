@@ -2,7 +2,7 @@ package testqueue;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-import java.util.Queue;
+//import java.util.Queue;
 
 import queue_singlelinkedlist.FifoQueue;
 import org.junit.jupiter.api.AfterEach;
@@ -68,11 +68,16 @@ class TestAppendFifoQueue {
 	//"Cannot append a queue to itself"
 	@Test
 	void testSelf() {
-		myQueue1.offer(1);
-		myQueue1.append(myQueue1);
-		Throwable exception = org.junit.jupiter.api.Assertions.assertThrows(IllegalArgumentException.class, () -> {
-            myQueue1.append(myQueue1);
-        });
-		assertEquals("Cannot append a queue to itself", exception.getMessage(), "Fel");
+	    myQueue1.offer(1);
+
+	    try {
+	        myQueue1.append(myQueue1);
+	        //Om felmedelande inte kommer når vi fail meddelandet, annars går vi in i catch
+	        fail("Expected IllegalArgumentException was not thrown");
+	    } catch (IllegalArgumentException e) {
+	    	//När vi är här dubbelkollar vi bara att meddelandet är det som jag la in
+	        assertEquals("Cannot append to itself", e.getMessage());
+	    }
 	}
+
 }
