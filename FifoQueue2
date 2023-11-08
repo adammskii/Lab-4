@@ -36,12 +36,13 @@ public class FifoQueue<E> extends AbstractQueue<E> implements Queue<E> {
 			newNode.next = newNode;
 			size++;
 		} else {
-			//
+			//Pekar på äldsta noden
 			newNode.next = last.next;
+			//Gör så att den pekar på nästa
 			last.next = newNode;
-
 			size++;
 		}
+		//Sätter sista till den tillagda
 		last = newNode;
 
 		if (size == temp) {
@@ -149,7 +150,41 @@ public class FifoQueue<E> extends AbstractQueue<E> implements Queue<E> {
 		}
 		
 	}
+	public void append(FifoQueue<E> q) {
+	    if (this == q) {
+	        throw new IllegalArgumentException("Cannot append to itself");
+	    }
+	    
+	    if (q.isEmpty()) {
+	        return; // Inget behöver göras om den andra kön är tom.
+	    }
 
+	    if (isEmpty()) {
+	        // Om den aktuella kön är tom sätter bara last och size till -->
+	        last = q.last;
+	        size = q.size();
+	    } else {
+	    	//Sparar en temporär
+	        QueueNode<E> tmp = last.next;
+	        //Pekar på den andra
+	        last.next = q.last.next;
+	        //Den sista ska peka på huvud
+	        q.last.next = tmp;
+	        //Den sista blir nu q.last
+	        last = q.last;
+	        //Lägger till storlekn
+	        size += q.size();
+	    }
+	    //Resettar
+	    q.last = null;
+	    q.size = 0;
+	}
+		
+//Fel att göra så		
+//	    while (!q.isEmpty()) {
+//	        this.offer(q.poll());
+	    
+	
 	private static class QueueNode<E> {
 		E element;
 		QueueNode<E> next;
