@@ -2,6 +2,8 @@ package testqueue;
 
 import static org.junit.jupiter.api.Assertions.*;
 
+//import java.util.NoSuchElementException;
+
 //import java.util.Queue;
 
 import queue_singlelinkedlist.FifoQueue;
@@ -58,6 +60,8 @@ class TestAppendFifoQueue {
 		
 		myQueue1.append(myQueue2);
 		//Testar att de är i ordning
+		//testa så storlek stämmer
+		assertEquals(myQueue1.size(),4, "fel");
 		assertEquals(myQueue1.poll(),1,"fel");
 		assertEquals(myQueue1.poll(),2, "fel");
 		assertEquals(myQueue1.poll(),3, "fel");
@@ -69,7 +73,7 @@ class TestAppendFifoQueue {
 	@Test
 	void testSelf() {
 	    myQueue1.offer(1);
-
+//	    assertThrows(NoSuchElementException.class, () -> myQueue1.append(myQueue1));
 	    try {
 	        myQueue1.append(myQueue1);
 	        //Om felmedelande inte kommer når vi fail meddelandet, annars går vi in i catch
@@ -79,5 +83,6 @@ class TestAppendFifoQueue {
 	        assertEquals("Cannot append to itself", e.getMessage());
 	    }
 	}
+	
 
 }
